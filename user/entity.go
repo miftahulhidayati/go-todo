@@ -1,6 +1,10 @@
 package user
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
 	ID           int
@@ -9,4 +13,5 @@ type User struct {
 	PasswordHash string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	DeletedAt    gorm.DeletedAt
 }
