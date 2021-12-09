@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -10,7 +9,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/miftahulhidayati/go-todo/auth"
 	"github.com/miftahulhidayati/go-todo/database"
 	docs "github.com/miftahulhidayati/go-todo/docs"
@@ -41,10 +39,10 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	db := database.InitMysqlDB()
 
