@@ -4,7 +4,7 @@ A RESTful API for todo application with Go
 # API Documentation 
 https://go-todo-miftahulhdyt.herokuapp.com/swagger/index.html
 
-## Installation & Run
+# Installation & Run
 ```bash
 # Download this project
 go get github.com/miftahulhidayati/go-todo
@@ -25,13 +25,13 @@ cd go-todo
 go run main.go
 ./go-todo
 ```
-
 # Dependencies
 - JWT GO "github.com/dgrijalva/jwt-go"
 - GIN "github.com/gin-gonic/gin"
-- GODOTENV "github.com/joho/godotenv"
 - swaggerFiles "github.com/swaggo/files"
 - ginSwagger "github.com/swaggo/gin-swagger"
 - GIN CORS "github.com/gin-contrib/cors"
 - GIN SESSIONS "github.com/gin-contrib/sessions" "github.com/gin-contrib/sessions/cookie"
 - GORM "gorm.io/gorm"
+
+Miftahul Hidayati - miftahulhdyt@outlook.com
