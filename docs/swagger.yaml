@@ -1,0 +1,345 @@
+basePath: /api/v1
+definitions:
+  helper.Meta:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  helper.Response:
+    properties:
+      data: {}
+      meta:
+        $ref: '#/definitions/helper.Meta'
+    type: object
+  todo.CreateTodoInputApi:
+    properties:
+      complete:
+        type: boolean
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  todo.TodoFormatter:
+    properties:
+      complete:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  user.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  user.RegisterUserInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  user.UpdateUserInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    required:
+    - email
+    - name
+    type: object
+  user.UserFormatter:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      token:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: miftahulhdyt@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a Todo API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API Todo Application
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login User
+      parameters:
+      - description: Login User
+        in: body
+        name: userId
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/user.UserFormatter'
+                type: object
+            type: array
+      summary: Login user
+      tags:
+      - User
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Resigter User
+      parameters:
+      - description: Register User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterUserInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/user.UserFormatter'
+                type: object
+            type: array
+      summary: Register user
+      tags:
+      - User
+  /todos:
+    get:
+      description: Get all todo description
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    items:
+                      $ref: '#/definitions/todo.TodoFormatter'
+                    type: array
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get all todo
+      tags:
+      - Todo
+    post:
+      consumes:
+      - application/json
+      description: Create todo description
+      parameters:
+      - description: Create Todo
+        in: body
+        name: todoId
+        required: true
+        schema:
+          $ref: '#/definitions/todo.CreateTodoInputApi'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/todo.TodoFormatter'
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Create todo
+      tags:
+      - Todo
+  /todos/{id}:
+    get:
+      description: Get todo description
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/todo.TodoFormatter'
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get todo
+      tags:
+      - Todo
+    put:
+      description: Update todo description
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Todo
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/todo.CreateTodoInputApi'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/todo.TodoFormatter'
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Update todo
+      tags:
+      - Todo
+  /todos/{todoId}:
+    delete:
+      description: delete todo description
+      parameters:
+      - description: Todo ID
+        in: path
+        name: todoId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+      security:
+      - BearerAuth: []
+      summary: delete todo
+      tags:
+      - Todo
+  /users:
+    get:
+      description: Get user description
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/user.UserFormatter'
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Get user
+      tags:
+      - User
+    put:
+      description: Update user description
+      parameters:
+      - description: Update User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            items:
+              allOf:
+              - $ref: '#/definitions/helper.Response'
+              - properties:
+                  data:
+                    $ref: '#/definitions/user.UserFormatter'
+                type: object
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Update user
+      tags:
+      - User
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

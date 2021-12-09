@@ -5,8 +5,8 @@ import "errors"
 type Service interface {
 	GetTodos() ([]Todo, error)
 	GetTodosByUserID(userID int) ([]Todo, error)
-	GetTodoByID(input GetTodoInput) (Todo, error)
-	DeleteTodo(input GetTodoInput) error
+	GetTodoByID(userID int, input GetTodoInput) (Todo, error)
+	DeleteTodo(userID int, input GetTodoInput) error
 	CreateTodo(input CreateTodoInput) (Todo, error)
 	UpdateTodo(inputID GetTodoInput, inputData CreateTodoInput) (Todo, error)
 }
@@ -41,25 +41,37 @@ func (s *service) GetTodosByUserID(userID int) ([]Todo, error) {
 	}
 	return todos, nil
 }
-func (s *service) GetTodoByID(input GetTodoInput) (Todo, error) {
+func (s *service) GetTodoByID(userID int, input GetTodoInput) (Todo, error) {
+
 	todo, err := s.repository.GetByID(input.ID)
+	if todo.UserID != userID {
+		return todo, errors.New("Not Found")
+	}
 	if err != nil {
 		return todo, err
 	}
 	return todo, nil
 }
-func (s *service) DeleteTodo(input GetTodoInput) error {
-	err := s.repository.Delete(input.ID)
+func (s *service) DeleteTodo(inputID int, input GetTodoInput) error {
+	todo, err := s.repository.GetByID(input.ID)
+	if err != nil {
+		return err
+	}
+	if todo.UserID != inputID {
+		return errors.New("Failed to delete, UserID does not match")
+	}
+	err = s.repository.Delete(input.ID)
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
 func (s *service) CreateTodo(input CreateTodoInput) (Todo, error) {
 	todo := Todo{}
 	todo.Name = input.Name
 	todo.UserID = input.User.ID
-	todo.Complete = false
+	todo.Complete = input.Complete
 
 	newTodo, err := s.repository.Create(todo)
 	if err != nil {

@@ -7,6 +7,10 @@ type CreateTodoInput struct {
 	Complete bool   `json:"complete"`
 	User     user.User
 }
+type CreateTodoInputApi struct {
+	Name     string `json:"name" binding:"required"`
+	Complete bool   `json:"complete"`
+}
 type GetTodoInput struct {
 	ID int `uri:"id" binding:"required"`
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
@@ -9,15 +10,42 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/miftahulhidayati/go-todo/auth"
 	"github.com/miftahulhidayati/go-todo/database"
+	docs "github.com/miftahulhidayati/go-todo/docs"
 	"github.com/miftahulhidayati/go-todo/handler"
 	"github.com/miftahulhidayati/go-todo/helper"
 	"github.com/miftahulhidayati/go-todo/todo"
 	"github.com/miftahulhidayati/go-todo/user"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title API Todo Application
+// @version 1.0
+// @description This is a Todo API.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email miftahulhdyt@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	db := database.InitMysqlDB()
 
 	userRepository := user.NewRepository(db)
@@ -38,17 +66,27 @@ func main() {
 
 	api := router.Group("/api/v1")
 
-	api.POST("/users", userHandler.RegisterUser)
+	// register user
+	api.POST("/register", userHandler.RegisterUser)
+	// login user
 	api.POST("/login", userHandler.Login)
-	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
-	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
-	api.GET("/users/fetch", authMiddleware(authService, userService), userHandler.FetchUser)
+	// get user
+	api.GET("/users", authMiddleware(authService, userService), userHandler.FetchUser)
+	api.PUT("/users", authMiddleware(authService, userService), userHandler.UpdateUser)
 
-	api.GET("/todos", todoHandler.GetTodos)
-	api.GET("/todos/:id", todoHandler.GetTodo)
+	// get all todos
+	api.GET("/todos", authMiddleware(authService, userService), todoHandler.GetTodos)
+	// get todo by id
+	api.GET("/todos/:id", authMiddleware(authService, userService), todoHandler.GetTodo)
+	// create todo
 	api.POST("/todos", authMiddleware(authService, userService), todoHandler.CreateTodo)
+	// update todo
 	api.PUT("/todos/:id", authMiddleware(authService, userService), todoHandler.UpdateTodo)
+	// delete todo
 	api.DELETE("/todos/:id", authMiddleware(authService, userService), todoHandler.DeleteTodo)
+
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run()
 }
@@ -70,7 +108,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		}
 		token, err := authService.ValidateToken(tokenString)
 		if err != nil {
-			respons := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			respons := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "accessToken invalid or expired", nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, respons)
 			return
 		}
