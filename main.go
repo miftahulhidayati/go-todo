@@ -20,7 +20,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title API Todo Application
+// @title API Todo Applications
 // @version 1.0
 // @description This is a Todo API.
 // @termsOfService http://swagger.io/terms/
