@@ -19,7 +19,7 @@ func InitMysqlDB() *gorm.DB {
 	dbName := os.Getenv("DB_NAME")
 	dbPort := os.Getenv("DB_PORT")
 
-	connection := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", dbHost, dbUser, dbPass, dbName, dbPort)
+	connection := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=require TimeZone=Asia/Shanghai", dbHost, dbUser, dbPass, dbName, dbPort)
 	fmt.Println(dbUser, dbPass, dbHost, dbName, dbPort)
 	db, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
 
