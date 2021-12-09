@@ -79,7 +79,7 @@ definitions:
       token:
         type: string
     type: object
-host: localhost:8080
+host: go-todo-miftahulhdyt.herokuapp.com/
 info:
   contact:
     email: miftahulhdyt@gmail.com
@@ -90,7 +90,7 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: API Todo Application
+  title: API Todo Applications
   version: "1.0"
 paths:
   /login:

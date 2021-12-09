@@ -597,10 +597,10 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:8080",
+	Host:        "go-todo-miftahulhdyt.herokuapp.com/",
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
-	Title:       "API Todo Application",
+	Title:       "API Todo Applications",
 	Description: "This is a Todo API.",
 }
 

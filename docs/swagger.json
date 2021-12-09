@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a Todo API.",
-        "title": "API Todo Application",
+        "title": "API Todo Applications",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "go-todo-miftahulhdyt.herokuapp.com/",
     "basePath": "/api/v1",
     "paths": {
         "/login": {
