@@ -79,7 +79,7 @@ definitions:
       token:
         type: string
     type: object
-host: go-todo-miftahulhdyt.herokuapp.com/
+host: go-todo-miftahulhdyt.herokuapp.com
 info:
   contact:
     email: miftahulhdyt@gmail.com

@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "go-todo-miftahulhdyt.herokuapp.com/",
+    "host": "go-todo-miftahulhdyt.herokuapp.com",
     "basePath": "/api/v1",
     "paths": {
         "/login": {
